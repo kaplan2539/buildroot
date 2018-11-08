@@ -1,9 +1,52 @@
 config BR2_PACKAGE_SUNXI_TOOLS
-	bool "sunxi nand-part"
+	bool "sunxi-tools"
 	depends on BR2_arm
 	help
-	  nand-part is part of sunxi-tools for Allwinner A10 (aka
-	  sun4i) and A13 (aka sun5i) based devices. It is a tool to
-	  repartition the internal NAND on sunxi devices.
+	  Tools for Allwinner A10 (aka sun4i) and A13 (aka sun5i)
+	  based devices. This includes fex2bin which can be used to
+	  compile .fex board definition files to the binary script.bin
+	  format required by the linux-sunxi kernel. These tools are
+	  specific for linux-sunxi kernel and do not apply to the
+	  mainline Linux kernel version.
 
 	  http://linux-sunxi.org/Sunxi-tools
+
+if BR2_PACKAGE_SUNXI_TOOLS
+
+# from the "tools" make target
+config BR2_PACKAGE_SUNXI_TOOLS_FEXC
+    bool "sunxi-fexc"
+    default n
+
+config BR2_PACKAGE_SUNXI_TOOLS_BOOTINFO
+    bool "sunxi-bootinfo"
+    default n
+
+config BR2_PACKAGE_SUNXI_TOOLS_FEL
+    bool "sunxi-fel"
+    default n
+
+config BR2_PACKAGE_SUNXI_TOOLS_NAND_PART
+    bool "sunxi-nand-part"
+    default y
+
+config BR2_PACKAGE_SUNXI_TOOLS_PIO
+    bool "sunxi-pio"
+    default n
+
+# from the "target-tools" make target
+config BR2_PACKAGE_SUNXI_TOOLS_MEMINFO
+    bool "sunxi-meminfo"
+    default n
+
+# from the "misc" make target
+config BR2_PACKAGE_SUNXI_TOOLS_PHOENIX_INFO
+    bool "phoenix_info"
+    default n
+
+config BR2_PACKAGE_SUNXI_TOOLS_NAND_IMAGE_BUILDER
+    bool "sunxi-nand-image-builder"
+    default n
+
+endif #BR2_PACKAGE_SUNXI_TOOLS
+

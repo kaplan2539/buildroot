@@ -10,3 +10,43 @@ config BR2_PACKAGE_HOST_SUNXI_TOOLS
 	  mainline Linux kernel version.
 
 	  http://linux-sunxi.org/Sunxi-tools
+
+if BR2_PACKAGE_HOST_SUNXI_TOOLS
+
+# from the "tools" make target
+config BR2_PACKAGE_HOST_SUNXI_TOOLS_FEXC
+    bool "sunxi-fexc"
+    default y
+
+config BR2_PACKAGE_HOST_SUNXI_TOOLS_BOOTINFO
+    bool "sunxi-bootinfo"
+    default y
+
+config BR2_PACKAGE_HOST_SUNXI_TOOLS_FEL
+    bool "sunxi-fel"
+    default y
+
+config BR2_PACKAGE_HOST_SUNXI_TOOLS_NAND_PART
+    bool "sunxi-nand-part"
+    default y
+
+config BR2_PACKAGE_HOST_SUNXI_TOOLS_PIO
+    bool "sunxi-pio"
+    default y
+
+# from the "target-tools" make target
+config BR2_PACKAGE_HOST_SUNXI_TOOLS_MEMINFO
+    bool "sunxi-meminfo"
+    default n
+
+# from the "misc" make target
+config BR2_PACKAGE_HOST_SUNXI_TOOLS_PHOENIX_INFO
+    bool "phoenix_info"
+    default n
+
+config BR2_PACKAGE_HOST_SUNXI_TOOLS_NAND_IMAGE_BUILDER
+    bool "sunxi-nand-image-builder"
+    default n
+
+endif #BR2_PACKAGE_HOST_SUNXI_TOOLS
+
