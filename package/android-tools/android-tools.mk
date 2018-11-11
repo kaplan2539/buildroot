@@ -31,13 +31,21 @@ HOST_ANDROID_TOOLS_PRE_PATCH_HOOKS += ANDROID_TOOLS_DEBIAN_PATCH
 ANDROID_TOOLS_PRE_PATCH_HOOKS += ANDROID_TOOLS_DEBIAN_PATCH
 
 ifeq ($(BR2_PACKAGE_HOST_ANDROID_TOOLS_FASTBOOT),y)
-HOST_ANDROID_TOOLS_TARGETS += fastboot
+HOST_ANDROID_TOOLS_BUILD_TARGETS += fastboot
+HOST_ANDROID_TOOLS_INSTALL_TARGETS += fastboot
 HOST_ANDROID_TOOLS_DEPENDENCIES += host-zlib host-libselinux
 endif
 
 ifeq ($(BR2_PACKAGE_HOST_ANDROID_TOOLS_ADB),y)
-HOST_ANDROID_TOOLS_TARGETS += adb
+HOST_ANDROID_TOOLS_BUILD_TARGETS += adb
+HOST_ANDROID_TOOLS_INSTALL_TARGETS += adb
 HOST_ANDROID_TOOLS_DEPENDENCIES += host-zlib host-openssl
+endif
+
+ifeq ($(BR2_PACKAGE_HOST_ANDROID_TOOLS_EXT4_UTILS),y)
+HOST_ANDROID_TOOLS_BUILD_TARGETS += ext4_utils
+HOST_ANDROID_TOOLS_INSTALL_TARGETS_EXT4_UTILS += make_ext4fs ext4fixup ext2simg img2simg simg2img simg2simg
+HOST_ANDROID_TOOLS_DEPENDENCIES += host-libselinux
 endif
 
 ifeq ($(BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT),y)
@@ -58,7 +66,7 @@ endif
 # Build each tool in its own directory not to share object files
 
 define HOST_ANDROID_TOOLS_BUILD_CMDS
-	$(foreach t,$(HOST_ANDROID_TOOLS_TARGETS),\
+	$(foreach t,$(HOST_ANDROID_TOOLS_BUILD_TARGETS),\
 		mkdir -p $(@D)/build-$(t) && \
 		$(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) $(MAKE) SRCDIR=$(@D) \
 			-C $(@D)/build-$(t) -f $(@D)/debian/makefiles/$(t).mk$(sep))
@@ -72,8 +80,10 @@ define ANDROID_TOOLS_BUILD_CMDS
 endef
 
 define HOST_ANDROID_TOOLS_INSTALL_CMDS
-	$(foreach t,$(HOST_ANDROID_TOOLS_TARGETS),\
+	$(foreach t,$(HOST_ANDROID_TOOLS_INSTALL_TARGETS),\
 		$(INSTALL) -D -m 0755 $(@D)/build-$(t)/$(t) $(HOST_DIR)/bin/$(t)$(sep))
+	$(foreach t,$(HOST_ANDROID_TOOLS_INSTALL_TARGETS_EXT4_UTILS),\
+		$(INSTALL) -D -m 0755 $(@D)/build-ext4_utils/$(t) $(HOST_DIR)/bin/$(t)$(sep))
 endef
 
 define ANDROID_TOOLS_INSTALL_TARGET_CMDS
